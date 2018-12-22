@@ -1,2 +1,8 @@
 # fsdb
-Key Value file base
+
+Small Key-Value database 
+
+## Compile 
+cmake .. 
+
+## run tests
