@@ -1,7 +1,10 @@
 # fsdb
 
-
 fsdb is one of Rasmart node's module.Presenet oneself as KeyValue small database
+
+### Dependencies
+
+cmake version 3.13
 
 ### How-to
 ```sh
