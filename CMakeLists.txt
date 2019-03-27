@@ -27,7 +27,25 @@ endif()
 
 set(CMAKE_CXX_STANDARD 11)
 
-set(BUILD_TESTS OFF CACHE BOOL "Build unit tests")
+set(BUILD_TESTS ON CACHE BOOL "Build unit tests")
+
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY
+		${PROJECT_BINARY_DIR}/bin
+		CACHE PATH
+		"Single directory for all"
+		)
+
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY
+		${PROJECT_BINARY_DIR}/bin
+		CACHE PATH
+		"Single directory for all"
+		)
+
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY
+		${PROJECT_BINARY_DIR}/lib
+		CACHE PATH
+		"Single directory for all"
+		)
 
 set(FSDB_SOURCES
 		src/fsdb.cpp
