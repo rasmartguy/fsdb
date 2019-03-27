@@ -1,7 +1,13 @@
 cmake_minimum_required(VERSION 3.13)
 project(fsdb)
 
-if("${TARGET_CPU}" STREQUAL "amd64")
+if("${TARGET_CPU}" STREQUAL "")
+	set(TARGET_CPU ${CMAKE_HOST_SYSTEM_PROCESSOR})
+endif()
+
+string(TOLOWER "${TARGET_CPU}" TARGET_CPU)
+
+if("${TARGET_CPU}" STREQUAL "amd64" OR "${TARGET_CPU}" STREQUAL "x86_64")
 	set(CMAKE_SIZEOF_VOID_P 8)
 	set_property(GLOBAL PROPERTY FIND_LIBRARY_USE_LIB64_PATHS TRUE)
 	set_property(GLOBAL PROPERTY FIND_LIBRARY_USE_LIB32_PATHS FALSE)
@@ -31,7 +37,7 @@ set(FSDB_HEADERS
 		include/fsdb.h
 		)
 
-add_library(fsdb SHARED ${FSDB_SOURCES} ${FSDB_HEADERS})
+add_library(fsdb STATIC ${FSDB_SOURCES} ${FSDB_HEADERS})
 set(FSDB_INCLUDE_DIRS include)
 set(FSDB_LIBS fsdb)
 target_include_directories(fsdb PUBLIC ${FSDB_INCLUDE_DIRS})
