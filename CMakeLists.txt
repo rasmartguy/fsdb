@@ -27,7 +27,7 @@ endif()
 
 set(CMAKE_CXX_STANDARD 11)
 
-set(BUILD_TESTS ON CACHE BOOL "Build unit tests")
+set(BUILD_TESTS OFF CACHE BOOL "Build unit tests")
 
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY
 		${PROJECT_BINARY_DIR}/bin
