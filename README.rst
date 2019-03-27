@@ -1,10 +1,10 @@
 FSDB
 ====
 
-.. image:: https://travis-ci.com/froexilize/fsdb.svg?branch=master
-	:target: https://travis-ci.com/froexilize/fsdb
-.. image:: https://ci.appveyor.com/api/projects/status/4thtertrite0tgnf/branch/master?svg=true
-	:target: https://ci.appveyor.com/project/froexilize/fsdb
+.. image:: https://travis-ci.com/Ra-Smart/fsdb.svg?branch=master
+    :target: https://travis-ci.com/Ra-Smart/fsdb
+.. image:: https://ci.appveyor.com/api/projects/status/4mgv1j92889dhe8m/branch/master?svg=true
+	:target: https://ci.appveyor.com/project/froexilize/fsdb-skq6o
 .. image:: https://img.shields.io/badge/License-GPLv3-blue.svg
 	:target: LICENSE
 
