@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.13)
-project(fsdb)
+project(fsdb CXX)
 
 if("${TARGET_CPU}" STREQUAL "")
 	set(TARGET_CPU ${CMAKE_HOST_SYSTEM_PROCESSOR})
@@ -27,7 +27,7 @@ endif()
 
 set(CMAKE_CXX_STANDARD 11)
 
-set(BUILD_TESTS OFF CACHE BOOL "Build unit tests")
+set(BUILD_TESTS OFF CACHE BOOL "Build unit tests" FORCE)
 
 set(FSDB_SOURCES
 		src/fsdb.cpp
@@ -37,20 +37,43 @@ set(FSDB_HEADERS
 		include/fsdb.h
 		)
 
-add_library(fsdb STATIC ${FSDB_SOURCES} ${FSDB_HEADERS})
+add_library(fsdb STATIC ${FSDB_SOURCES})
 set(FSDB_INCLUDE_DIRS include)
 set(FSDB_LIBS fsdb)
 target_include_directories(fsdb PUBLIC ${FSDB_INCLUDE_DIRS})
+link_directories(${CMAKE_BINARY_DIR})
 
 if(BUILD_TESTS)
-	include(cmake/External_GTest.cmake)
+	configure_file(CMakeLists.txt.in googletest-download/CMakeLists.txt)
+	execute_process(COMMAND ${CMAKE_COMMAND} -G "${CMAKE_GENERATOR}" .
+			RESULT_VARIABLE result
+			WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/googletest-download)
+	if(result)
+		message(FATAL_ERROR "CMake step for googletest failed: ${result}")
+	endif()
+	execute_process(COMMAND ${CMAKE_COMMAND} --build .
+			RESULT_VARIABLE result
+			WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/googletest-download)
+	if(result)
+		message(FATAL_ERROR "Build step for googletest failed: ${result}")
+	endif()
+
+	set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+
+	add_subdirectory(${CMAKE_CURRENT_BINARY_DIR}/googletest-src
+			${CMAKE_CURRENT_BINARY_DIR}/googletest-build
+			EXCLUDE_FROM_ALL)
+
+	if(CMAKE_VERSION VERSION_LESS 2.8.11)
+		include_directories("${gtest_SOURCE_DIR}/include")
+	endif()
+
 	add_executable(run_all_tests
-			tests/run_all_tests.cpp
+			#tests/run_all_tests.cpp
 			tests/ut_basic.cpp
 			)
 	target_include_directories(run_all_tests PRIVATE ${FSDB_INCLUDE_DIRS} ${GTEST_INCLUDE_DIRS})
-	target_link_libraries(run_all_tests ${FSDB_LIBS} ${ARGN} gtest ${CMAKE_THREAD_LIBS_INIT})
-	add_dependencies(run_all_tests gtest_ext)
+	target_link_libraries(run_all_tests fsdb gtest_main)
 	add_test(NAME unit_tests COMMAND run_all_tests)
 endif()
 

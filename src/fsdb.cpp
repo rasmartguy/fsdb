@@ -5,7 +5,7 @@ bool Fsdb::init() {
 	return initialized();
 }
 
-inline bool Fsdb::initialized() {
+bool Fsdb::initialized() {
 	return m_initialized;
 }
 
