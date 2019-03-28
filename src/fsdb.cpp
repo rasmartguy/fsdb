@@ -1,10 +1,11 @@
 #include "fsdb.h"
 
-void Fsdb::init() {
+bool Fsdb::init() {
 	m_initialized = true;
+	return initialized();
 }
 
-bool Fsdb::initialized() {
+inline bool Fsdb::initialized() {
 	return m_initialized;
 }
 

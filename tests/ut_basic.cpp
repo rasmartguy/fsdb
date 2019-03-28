@@ -3,11 +3,21 @@
 
 TEST(FsdbInit, ReturnsFalseIfNotInitialized) {
 	Fsdb fsdb;
-	EXPECT_FALSE(fsdb.initialized());
+	bool result = fsdb.initialized();
+	EXPECT_FALSE(result);
 }
 
-TEST(VoidTestGroup, ReturnsTrueIfInitialized) {
+TEST(FsdbInit, ReturnsTrueIfInitialized) {
 	Fsdb fsdb;
 	fsdb.init();
-	EXPECT_TRUE(fsdb.initialized());
+	bool result = fsdb.initialized();
+	EXPECT_TRUE(result);
 }
+
+TEST(FsdbInit, InitReturnsSameAsInitialized) {
+	Fsdb fsdb;
+	bool result = fsdb.init();
+	bool expected = fsdb.initialized();
+	EXPECT_EQ(result, expected);
+}
+

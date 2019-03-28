@@ -9,7 +9,7 @@ public:
 	~Fsdb() {
 
 	}
-	void init();
+	bool init();
 	bool initialized();
 private:
 	bool m_initialized;
