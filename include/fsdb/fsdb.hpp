@@ -1,5 +1,6 @@
-#ifndef _RA_DB_H_
-#define _RA_DB_H_
+#pragma once
+
+#include <string>
 
 class Fsdb {
 public:
@@ -7,12 +8,14 @@ public:
 
 	}
 	~Fsdb() {
-
+        deinit();
 	}
 	bool init();
+	bool deinit();
 	bool initialized();
+	std::string get_name();
 private:
 	bool m_initialized;
+	std::string m_name;
 };
 
-#endif

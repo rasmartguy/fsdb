@@ -25,9 +25,7 @@ else()
 	message(FATAL_ERROR "Unsupported CPU: ${TARGET_CPU}")
 endif()
 
-set(CMAKE_CXX_STANDARD 11)
-
-set(BUILD_TESTS OFF CACHE BOOL "Build unit tests" FORCE)
+set(BUILD_TESTS OFF CACHE BOOL "Build unit tests")
 
 set(FSDB_SOURCES
 		src/fsdb.cpp
@@ -38,6 +36,7 @@ set(FSDB_HEADERS
 		)
 
 add_library(fsdb STATIC ${FSDB_SOURCES})
+set_property(TARGET fsdb PROPERTY CXX_STANDARD 11)
 set(FSDB_INCLUDE_DIRS include)
 set(FSDB_LIBS fsdb)
 target_include_directories(fsdb PUBLIC ${FSDB_INCLUDE_DIRS})
@@ -64,17 +63,16 @@ if(BUILD_TESTS)
 			${CMAKE_CURRENT_BINARY_DIR}/googletest-build
 			EXCLUDE_FROM_ALL)
 
-	if(CMAKE_VERSION VERSION_LESS 2.8.11)
-		include_directories("${gtest_SOURCE_DIR}/include")
-	endif()
+    include_directories("${gtest_SOURCE_DIR}/include")
+    include_directories("${gmock_SOURCE_DIR}/include")
 
 	add_executable(run_all_tests
 			#tests/run_all_tests.cpp
 			tests/ut_basic.cpp
 			)
-	target_include_directories(run_all_tests PRIVATE ${FSDB_INCLUDE_DIRS} ${GTEST_INCLUDE_DIRS})
-	target_link_libraries(run_all_tests fsdb gtest_main)
+	target_include_directories(run_all_tests PRIVATE ${FSDB_INCLUDE_DIRS})
+	target_link_libraries(run_all_tests fsdb gtest_main gmock_main)
+	enable_testing()
 	add_test(NAME unit_tests COMMAND run_all_tests)
 endif()
-
 
