@@ -25,6 +25,8 @@ else()
 	message(FATAL_ERROR "Unsupported CPU: ${TARGET_CPU}")
 endif()
 
+set(CMAKE_CXX_STANDARD 11)
+
 set(BUILD_TESTS OFF CACHE BOOL "Build unit tests")
 
 set(FSDB_SOURCES
