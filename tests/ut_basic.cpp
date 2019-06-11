@@ -60,3 +60,30 @@ TEST(FsdbInit, DeinitUnsetInitState) {
     fsdb.deinit();
     EXPECT_FALSE(fsdb.initialized());
 }
+
+TEST(FsdbInsert, FailedToInsertWithoutInit) {
+    Fsdb fsdb;
+    const std::string key = "key";
+    const std::string value = "value";
+    EXPECT_FALSE(fsdb.insert(key, value.c_str(), value.length()));
+}
+
+TEST(FsdbInsert, CorrectInsertionReturnsTrue) {
+    Fsdb fsdb;
+    fsdb.init();
+    const std::string key = "key";
+    const std::string value = "value";
+    EXPECT_TRUE(fsdb.insert(key, value.c_str(), value.length()));
+}
+
+TEST(FsdbInsert, InsertionCreatesFile) {
+    Fsdb fsdb;
+    fsdb.init();
+    const std::string key = "key";
+    const std::string value = "value";
+    EXPECT_TRUE(fsdb.insert(key, value.c_str(), value.length()));
+    std::filesystem::path key_file = fsdb.get_name();
+    key_file.append(key);
+    EXPECT_TRUE(std::filesystem::exists(key_file));
+}
+
