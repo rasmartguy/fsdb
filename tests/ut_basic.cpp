@@ -53,3 +53,10 @@ TEST(FsdbInit, InitDbCreatesDirectory) {
     fsdb.init();
     EXPECT_TRUE(std::filesystem::exists(db_name));
 }
+
+TEST(FsdbInit, DeinitUnsetInitState) {
+    Fsdb fsdb;
+    fsdb.init();
+    fsdb.deinit();
+    EXPECT_FALSE(fsdb.initialized());
+}

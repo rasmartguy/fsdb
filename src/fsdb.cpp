@@ -15,6 +15,7 @@ bool Fsdb::initialized() {
 }
 
 bool Fsdb::deinit() {
+    m_initialized = false;
     return true;
 }
 
