@@ -1,4 +1,5 @@
 #include "gmock/gmock.h"
+#include <filesystem>
 #include <fsdb/fsdb.hpp>
 
 TEST(FsdbInit, ReturnsFalseIfNotInitialized) {
@@ -39,6 +40,16 @@ TEST(FsdbInit, InitShouldBeCalled) {
 TEST(FsdbInit, InitSetsDefaultName) {
     Fsdb fsdb;
     fsdb.init();
-    EXPECT_STREQ(fsdb.get_name().c_str(), "default.db");
+    EXPECT_STREQ(fsdb.get_name().c_str(), "default");
 }
 
+TEST(FsdbInit, InitDbCreatesDirectory) {
+    Fsdb fsdb;
+    auto db_name = fsdb.get_name();
+    if (std::filesystem::exists(db_name)) {
+        std::filesystem::remove(db_name); //< preparing for test
+    }
+    EXPECT_FALSE(std::filesystem::exists(db_name));
+    fsdb.init();
+    EXPECT_TRUE(std::filesystem::exists(db_name));
+}

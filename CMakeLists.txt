@@ -25,7 +25,7 @@ else()
 	message(FATAL_ERROR "Unsupported CPU: ${TARGET_CPU}")
 endif()
 
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 17)
 
 set(BUILD_TESTS OFF CACHE BOOL "Build unit tests")
 
@@ -38,7 +38,7 @@ set(FSDB_HEADERS
 		)
 
 add_library(fsdb STATIC ${FSDB_SOURCES})
-set_property(TARGET fsdb PROPERTY CXX_STANDARD 11)
+set_property(TARGET fsdb PROPERTY CXX_STANDARD 17)
 set(FSDB_INCLUDE_DIRS include)
 set(FSDB_LIBS fsdb)
 target_include_directories(fsdb PUBLIC ${FSDB_INCLUDE_DIRS})

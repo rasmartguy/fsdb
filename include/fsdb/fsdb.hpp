@@ -4,7 +4,7 @@
 
 class Fsdb {
 public:
-	Fsdb() : m_initialized(false) {
+	Fsdb() : m_initialized(false), m_name("default") {
 
 	}
 	~Fsdb() {
@@ -17,5 +17,7 @@ public:
 private:
 	bool m_initialized;
 	std::string m_name;
+
+	bool init_db_directory();
 };
 
