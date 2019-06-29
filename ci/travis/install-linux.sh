@@ -6,11 +6,11 @@ fi
 
 sudo apt-get update -qq
 
-sudo apt-get install -qq g++-5
-sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-5 90
+sudo apt-get install -qq g++-9
+sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-9 90
 
 if [[ "${TARGET_CPU}" == "x86" ]]; then
-	sudo apt-get install -y g++-5-multilib
+	sudo apt-get install -y g++-9-multilib
 fi
 
 CMAKE_VERSION=3.13.4

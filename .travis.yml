@@ -10,6 +10,12 @@ compiler:
   - gcc
   - clang
 
+#addons:
+#  apt:
+#    packages:
+#      - gcc-9
+#      - g++-9
+
 env:
   - TARGET_CPU=amd64 BUILD_CONFIGURATION=Debug
   - TARGET_CPU=amd64 BUILD_CONFIGURETION=Release
