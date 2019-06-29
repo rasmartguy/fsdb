@@ -16,24 +16,6 @@ if /i "%1" == "x64" goto :amd64
 echo Invalid argument: '%1'
 exit -1
 
-:msvc10
-set TOOLCHAIN=msvc10
-set CMAKE_GENERATOR=Visual Studio 10 2010
-shift
-goto :loop
-
-:msvc12
-set TOOLCHAIN=msvc12
-set CMAKE_GENERATOR=Visual Studio 12 2013
-shift
-goto :loop
-
-:msvc14
-set TOOLCHAIN=msvc14
-set CMAKE_GENERATOR=Visual Studio 14 2015
-shift
-goto :loop
-
 :msvc15
 set TOOLCHAIN=msvc15
 set CMAKE_GENERATOR=Visual Studio 15 2017
