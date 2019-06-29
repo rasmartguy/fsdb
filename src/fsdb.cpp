@@ -44,12 +44,19 @@ std::string Fsdb::get_name() {
 }
 
 bool Fsdb::init_db_directory() {
-    if (std::filesystem::exists(m_name)) {
-		auto dir_entry = std::filesystem::directory_entry(m_name);
-        return dir_entry.is_directory();
+	auto p = std::filesystem::path(m_name);
+    if (std::filesystem::exists(p)) {
+    	auto is_dir = std::filesystem::is_directory(p);
+    	return is_dir;
     }
     else {
-        return std::filesystem::create_directories(m_name);
+    	try {
+    		std::filesystem::create_directories(p);
+    	}
+    	catch (...) {
+    		return false;
+    	}
+		return true;
     }
 }
 
@@ -70,3 +77,6 @@ bool Fsdb::insert(std::string_view key, const char *pdata, const size_t data_sz)
     return true;
 }
 
+bool obtain(std::string_view key, const char *&pdata, size_t &data_sz) {
+	return true;
+}

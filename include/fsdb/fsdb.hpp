@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <filesystem>
 
 bool save_buffer_to_file(const char *cFileName, const char *blob, const size_t cBlobSz);
 
@@ -17,6 +18,7 @@ public:
 	bool initialized();
 	std::string get_name();
 	bool insert(std::string_view key, const char *pdata, const size_t data_sz);
+	bool obtain(std::string_view key, const char *&pdata, size_t &data_sz);
 private:
 	bool m_initialized;
 	std::string m_name;
