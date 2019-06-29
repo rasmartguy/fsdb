@@ -8,11 +8,6 @@ FSDB
 .. image:: https://img.shields.io/badge/License-GPLv3-blue.svg
 	:target: LICENSE
 
-Abstract
---------
-
-Fsdb is one of Rasmart node's module. Presents oneself as key-value small and fast database.
-
 Dependencies
 ------------
 
