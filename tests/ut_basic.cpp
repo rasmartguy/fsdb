@@ -47,7 +47,7 @@ TEST(FsdbInit, InitDbCreatesDirectory) {
     Fsdb fsdb;
     auto db_name = fsdb.get_name();
     if (std::filesystem::exists(db_name)) {
-        std::filesystem::remove(db_name); //< preparing for test
+		std::filesystem::remove_all(db_name); //< preparing for test
     }
     EXPECT_FALSE(std::filesystem::exists(db_name));
     fsdb.init();

@@ -29,17 +29,19 @@ set(CMAKE_CXX_STANDARD 17)
 if(CMAKE_COMPILER_IS_GNUCXX)
 	set(GCC_MIN_VER "9.1")
 	if(CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL ${GCC_MIN_VER})
-		# gcc version is ok
+		message(STATUS "GNUCXX Found, version: ${CMAKE_CXX_COMPILER_VERSION}")
 	else()
 		message(FATAL_ERROR "GCC version ${GCC_MIN_VER} required. System version is ${CMAKE_CXX_COMPILER_VERSION}")
 	endif()
 endif()
 
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_SOURCE_DIR}/cmake)
+
 set(BUILD_TESTS OFF CACHE BOOL "Build unit tests")
 
-set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/dist/lib)
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/dist/lib)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/dist/bin)
 
 set(FSDB_SOURCES
 		src/fsdb.cpp
@@ -51,7 +53,7 @@ set(FSDB_HEADERS
 
 add_library(fsdb STATIC ${FSDB_SOURCES})
 set_target_properties(fsdb PROPERTIES CXX_STANDARD 17)
-set_target_properties(fsdb PROPERTIES PUBLIC_HEADER "fsdb.h")
+set_target_properties(fsdb PROPERTIES PUBLIC_HEADER "include/fsdb/fsdb.hpp")
 set(FSDB_INCLUDE_DIRS include)
 set(FSDB_LIBS fsdb)
 target_include_directories(fsdb PUBLIC ${FSDB_INCLUDE_DIRS})
@@ -97,5 +99,4 @@ install(TARGETS fsdb
 		PUBLIC_HEADER DESTINATION include)
 
 add_executable(main main.cpp)
-target_include_directories(main PRIVATE ${FSDB_INCLUDE_DIR})
 target_link_libraries(main fsdb)
