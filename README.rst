@@ -5,12 +5,15 @@ FSDB
     :target: https://travis-ci.com/froexilize/fsdb
 .. image:: https://ci.appveyor.com/api/projects/status/4thtertrite0tgnf/branch/master?svg=true
 	:target: https://ci.appveyor.com/project/froexilize/fsdb
+.. image:: https://img.shields.io/badge/language-cpp17-blue.svg
+.. image:: https://img.shields.io/github/issues/froexilize/fsdb.svg
+    :target: https://github.com/froexilize/fsdb/issues
 .. image:: https://img.shields.io/badge/License-GPLv3-blue.svg
 	:target: LICENSE
 
 Dependencies
 ------------
 
-Project uses c++17 standard and libraries.
+Project uses C++17 standard and libraries.
 Requires g++ version 9.1 or Visual Studio 2017.
 
