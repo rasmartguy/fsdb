@@ -2,6 +2,45 @@
 #include <filesystem>
 #include "fsdb/fsdb.hpp"
 
+bool load_buffer_from_file(const char *cFileName, unsigned char **buffer, size_t &fileSz) {
+	std::filesystem::path file_path {cFileName};
+	auto full_path = std::filesystem::canonical(file_path).string();
+	if(FILE *f = fopen(full_path.c_str(), "rb")) {
+		fseek(f,0,SEEK_END);
+		fileSz = (unsigned int)ftell(f);
+		if(!fileSz) {
+			// File have zero-size
+			fclose(f);
+			return false;
+		}
+		fseek(f, 0, SEEK_SET);
+		try {
+			auto result = new unsigned char[fileSz];
+			auto cFileRead = fread(result, 1, fileSz, f);
+			if(cFileRead == fileSz) {
+				// Bytes read: cFileRead
+				fclose(f);
+				*buffer = result;
+				return true;
+			} else {
+				// File read error
+				delete[] result;
+				fclose(f);
+				return false;
+			}
+		}
+		catch(...) {
+			// Buffer allocation error
+			fclose(f);
+			return false;
+		}
+	}
+	else {
+		// File not found
+		return false;
+	}
+}
+
 bool save_buffer_to_file(const char *cFileName,
                          const char *blob,
                          const size_t cBlobSz) {
@@ -15,7 +54,7 @@ bool save_buffer_to_file(const char *cFileName,
             // File write error
         }
         fclose(f);
-    }
+		}
     else {
         // file open error
     }
@@ -27,6 +66,15 @@ bool Fsdb::init() {
 	    return false; //< TODO: return error code
 	}
     m_initialized = true;
+	return initialized();
+}
+
+bool Fsdb::init(std::string_view name) {
+	m_name = name;
+	if (!init_db_directory()) {
+		return false; //< TODO: return error code
+	}
+	m_initialized = true;
 	return initialized();
 }
 
@@ -62,7 +110,7 @@ bool Fsdb::init_db_directory() {
 
 std::filesystem::path Fsdb::get_db_record_path(std::string_view key) {
     std::filesystem::path key_path(m_name);
-    return key_path.append(key);
+    return key_path.append(key.substr(0, 2)).append(key);
 }
 
 bool Fsdb::insert(std::string_view key, const char *pdata, const size_t data_sz) {
@@ -71,12 +119,19 @@ bool Fsdb::insert(std::string_view key, const char *pdata, const size_t data_sz)
     //if (std::filesystem::exists(key_path)) {
     //    return false;
     //}
-    if (!save_buffer_to_file(key_path.string().c_str(), "value", 5)) {
-        return false;
-    }
-    return true;
+    std::filesystem::create_directories(key_path.parent_path());
+	return save_buffer_to_file(key_path.string().c_str(), pdata, data_sz);
 }
 
-bool obtain(std::string_view key, const char *&pdata, size_t &data_sz) {
+bool Fsdb::obtain(std::string_view key, unsigned char **out_buffer) {
+	if (!initialized()) return false;
+	auto key_path = get_db_record_path(key);
+	size_t sz = 0;
+	load_buffer_from_file(key_path.c_str(), out_buffer, sz);
 	return true;
+}
+
+bool Fsdb::del(std::string_view key) {
+	auto key_path = get_db_record_path(key);
+	return std::filesystem::remove(key_path);
 }

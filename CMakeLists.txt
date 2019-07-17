@@ -25,7 +25,6 @@ else()
 	message(FATAL_ERROR "Unsupported CPU: ${TARGET_CPU}")
 endif()
 
-set(CMAKE_CXX_STANDARD 17)
 if(CMAKE_COMPILER_IS_GNUCXX)
 	set(GCC_MIN_VER "9.1")
 	if(CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL ${GCC_MIN_VER})
@@ -48,16 +47,18 @@ set(FSDB_SOURCES
 		)
 
 set(FSDB_HEADERS
-		include/fsdb.h
+		include/fsdb/fsdb.hpp
 		)
 
-add_library(fsdb STATIC ${FSDB_SOURCES})
-set_target_properties(fsdb PROPERTIES CXX_STANDARD 17)
-set_target_properties(fsdb PROPERTIES PUBLIC_HEADER "include/fsdb/fsdb.hpp")
+
+add_library(fsdb STATIC ${FSDB_SOURCES} ${FSDB_HEADERS})
+target_compile_features(fsdb PUBLIC cxx_std_17)
+set_target_properties(fsdb PROPERTIES PUBLIC_HEADER "${FSDB_HEADERS}")
+
 set(FSDB_INCLUDE_DIRS include)
 set(FSDB_LIBS fsdb)
+
 target_include_directories(fsdb PUBLIC ${FSDB_INCLUDE_DIRS})
-link_directories(${CMAKE_BINARY_DIR})
 
 if(BUILD_TESTS)
 	configure_file(CMakeLists.txt.in googletest-download/CMakeLists.txt)
@@ -96,7 +97,8 @@ endif()
 install(TARGETS fsdb
 		ARCHIVE DESTINATION lib
 		LIBRARY DESTINATION lib
-		PUBLIC_HEADER DESTINATION include)
+		PUBLIC_HEADER DESTINATION include/fsdb)
 
 add_executable(main main.cpp)
+set_target_properties(main PROPERTIES OUTPUT_NAME fsdb)
 target_link_libraries(main fsdb)
