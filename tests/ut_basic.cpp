@@ -106,9 +106,9 @@ TEST(FsdbInsert, InsertedValueIsInFile) {
 TEST(FsdbObtain, ObtainGetsCorrectValue) {
 	Fsdb fsdb;
 	fsdb.init();
-	const std::string key1 = "key1";
+	const std::string key1 = "super key1";
 	const std::string value1 = "value1";
-	const std::string key2 = "key2";
+	const std::string key2 = "super key2";
 	const std::string value2 = "value2";
 	fsdb.insert(key1, value1.c_str(), value1.length());
 	fsdb.insert(key2, value2.c_str(), value2.length());
