@@ -122,4 +122,6 @@ TEST(FsdbObtain, ObtainGetsCorrectValue) {
 
 	EXPECT_EQ(memcmp(value1.c_str(), b1, value1.length()), 0);
 	EXPECT_EQ(memcmp(value2.c_str(), b2, value2.length()), 0);
+	delete[] b1;
+	delete[] b2;
 }
