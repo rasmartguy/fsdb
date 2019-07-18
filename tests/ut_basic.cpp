@@ -123,6 +123,20 @@ TEST(FsdbObtain, ObtainingunexistingValueReturnsFalse) {
 	unsigned char *value = nullptr;
 	EXPECT_FALSE(fsdb.obtain(key, &value));
 	EXPECT_TRUE(value == nullptr);
+	delete[] value;
 }
 
-
+TEST(FsdbDel, DelRemovesValue) {
+	Fsdb fsdb;
+	fsdb.init();
+	const std::string key = "my key";
+	const std::string value = "my value";
+	unsigned char *buffer = nullptr;
+	EXPECT_FALSE(fsdb.obtain(key, &buffer));
+	fsdb.insert(key, value.c_str(), value.length());
+	EXPECT_TRUE(fsdb.obtain(key, &buffer));
+	delete[] buffer;
+	fsdb.del(key);
+	EXPECT_FALSE(fsdb.obtain(key, &buffer));
+	delete[] buffer;
+}
