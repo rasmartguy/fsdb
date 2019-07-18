@@ -93,16 +93,6 @@ TEST(FsdbInsert, InsertionCreatesFile) {
     EXPECT_TRUE(std::filesystem::exists(db_rec_path));
 }
 
-TEST(FsdbInsert, InsertedValueIsInFile) {
-	Fsdb fsdb;
-	fsdb.init();
-	const std::string key = "key";
-	const std::string value = "value";
-	auto db_rec_path = fsdb.get_db_record_path(key);
-	std::ifstream f(db_rec_path);
-
-}
-
 TEST(FsdbObtain, ObtainGetsCorrectValue) {
 	Fsdb fsdb;
 	fsdb.init();
@@ -125,3 +115,14 @@ TEST(FsdbObtain, ObtainGetsCorrectValue) {
 	delete[] b1;
 	delete[] b2;
 }
+
+TEST(FsdbObtain, ObtainingunexistingValueReturnsFalse) {
+	Fsdb fsdb;
+	fsdb.init();
+	const std::string key = "non_existing";
+	unsigned char *value = nullptr;
+	EXPECT_FALSE(fsdb.obtain(key, &value));
+	EXPECT_TRUE(value == nullptr);
+}
+
+

@@ -126,9 +126,11 @@ bool Fsdb::insert(std::string_view key, const char *pdata, const size_t data_sz)
 bool Fsdb::obtain(std::string_view key, unsigned char **out_buffer) {
 	if (!initialized()) return false;
 	auto key_path = get_db_record_path(key);
+	if(!std::filesystem::exists(key_path)) {
+		return false;
+	}
 	size_t sz = 0;
-	load_buffer_from_file(key_path.c_str(), out_buffer, sz);
-	return true;
+	return load_buffer_from_file(key_path.c_str(), out_buffer, sz);
 }
 
 bool Fsdb::del(std::string_view key) {
