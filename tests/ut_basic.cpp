@@ -133,9 +133,10 @@ TEST(FsdbDel, DelRemovesValue) {
 	const std::string value = "my value";
 	unsigned char *buffer = nullptr;
 	EXPECT_FALSE(fsdb.obtain(key, &buffer));
+	// TODO: Memory leak if not nullptr, but who knows?
+	EXPECT_TRUE(buffer == nullptr);
 	fsdb.insert(key, value.c_str(), value.length());
 	EXPECT_TRUE(fsdb.obtain(key, &buffer));
-	delete[] buffer;
 	fsdb.del(key);
 	EXPECT_FALSE(fsdb.obtain(key, &buffer));
 	delete[] buffer;
