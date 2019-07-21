@@ -18,3 +18,10 @@ Dependencies
 Project uses C++17 standard and libraries.
 Requires g++ version 9.1 or Visual Studio 2017.
 
+HOW-TO
+-----------
+    MACOS:
+    brew install llvm
+    set cmake compiler clang-8
+
+

@@ -34,6 +34,15 @@ if(CMAKE_COMPILER_IS_GNUCXX)
 	endif()
 endif()
 
+if(APPLE)
+	set(CMAKE_MODULE_LINKER_FLAGS_INIT "-L/usr/local/opt/llvm/lib")
+	set(CMAKE_CXX_FLAGS "-I/usr/local/opt/llvm/include")
+	link_directories("/usr/local/opt/llvm/lib")
+else()
+	set(CMAKE_CXX_COMPILER "/usr/bin/clang" CACHE string "clang compiler" FORCE)
+endif()
+
+
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_SOURCE_DIR}/cmake)
 
 set(BUILD_TESTS OFF CACHE BOOL "Build unit tests")
@@ -52,6 +61,9 @@ set(FSDB_HEADERS
 
 
 add_library(fsdb STATIC ${FSDB_SOURCES} ${FSDB_HEADERS})
+if(APPLE AND "${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
+	target_link_libraries(${PROJECT_NAME} c++fs)
+endif()
 target_compile_features(fsdb PUBLIC cxx_std_17)
 set_target_properties(fsdb PROPERTIES PUBLIC_HEADER "${FSDB_HEADERS}")
 
@@ -89,7 +101,7 @@ if(BUILD_TESTS)
 			tests/ut_basic.cpp
 			)
 	target_include_directories(run_all_tests PRIVATE ${FSDB_INCLUDE_DIRS})
-	target_link_libraries(run_all_tests fsdb gtest_main gmock_main)
+	target_link_libraries(run_all_tests fsdb gtest_main gmock_main )
 	enable_testing()
 	add_test(NAME unit_tests COMMAND run_all_tests)
 endif()
