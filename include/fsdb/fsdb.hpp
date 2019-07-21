@@ -9,12 +9,15 @@ bool save_buffer_to_file(const char *cFileName, const char *blob, size_t cBlobSz
 
 class Fsdb {
 public:
-	Fsdb() : m_initialized(false), m_name("default") {
+	Fsdb();
+	Fsdb(const Fsdb&)= delete;
+	Fsdb(const Fsdb&&)= delete;
+	Fsdb&operator=(const Fsdb&)= delete;
+	Fsdb&operator=(const Fsdb&&)= delete;
 
-	}
-	~Fsdb() {
-        deinit();
-	}
+	~Fsdb();
+
+
 	bool init();
 	bool init(std::string_view name);
 	bool deinit();

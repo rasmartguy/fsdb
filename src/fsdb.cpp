@@ -61,6 +61,13 @@ bool save_buffer_to_file(const char *cFileName,
     return result;
 }
 
+Fsdb::Fsdb() : m_initialized(false), m_name("default") {
+
+}
+Fsdb::~Fsdb(){
+	deinit();
+}
+
 bool Fsdb::init() {
 	if (!init_db_directory()) {
 	    return false; //< TODO: return error code
